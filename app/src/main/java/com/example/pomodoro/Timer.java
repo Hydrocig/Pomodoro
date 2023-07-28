@@ -16,11 +16,17 @@ public class Timer extends MainActivity {
 
 
     //Object initialization
+    int smallBrakeMin = 5;
+    int bigBrakeMin = 20;
+    int workTimeMin = 25;
+
+    int[] orderArray = {workTimeMin, smallBrakeMin,workTimeMin, smallBrakeMin,workTimeMin, smallBrakeMin,workTimeMin, bigBrakeMin};
+
     SimpleCalc simpleCalc = new SimpleCalc();
 
-    private TextView timerTextField;
-    private Button startTimerButton;
-    private Button pauseTimerButton;
+    private final TextView timerTextField;
+    private final Button startTimerButton;
+    private final Button pauseTimerButton;
 
     public Timer(TextView timerTextField, Button startTimerButton, Button pauseTimerButton) {
         this.timerTextField = timerTextField;
@@ -44,11 +50,11 @@ public class Timer extends MainActivity {
 
             @Override
             public void onFinish() {
-                timerTextField.setText("Pause");
                 cancelTimer();
                 startTimerButton.setVisibility(View.VISIBLE);
                 pauseTimerButton.setVisibility(View.INVISIBLE);
                 counter = counter + 1;
+                timerTextField.setText(orderArray[counter]+":00");
             }
         };
         cTimer.start();
