@@ -60,5 +60,16 @@ public class MainActivity extends AppCompatActivity {
                 resumeTimerButton.setVisibility(View.INVISIBLE);
             }
         });
+
+        stopTimerButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                timer.stopTimer();
+                timerTextField.setText(order[0]+":00");
+                pauseTimerButton.setVisibility(View.INVISIBLE);
+                resumeTimerButton.setVisibility(View.INVISIBLE);
+                startTimerButton.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }

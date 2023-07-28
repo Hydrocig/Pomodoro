@@ -50,7 +50,7 @@ public class Timer extends MainActivity {
 
             @Override
             public void onFinish() {
-                cancelTimer();
+                //cancelTimer();
                 startTimerButton.setVisibility(View.VISIBLE);
                 pauseTimerButton.setVisibility(View.INVISIBLE);
                 counter = counter + 1;
@@ -62,10 +62,6 @@ public class Timer extends MainActivity {
     }
 
     //cancel timer
-    public void cancelTimer(){
-        cTimer.cancel();
-    }
-
     public void pauseTimer(){
         paused = true;
         cTimer.cancel();
@@ -75,6 +71,12 @@ public class Timer extends MainActivity {
         paused = false;
         startTimer(milliLeft,1);
     }
+
+    public void stopTimer(){
+        cTimer.cancel();
+        counter = 0;
+    }
+
 
     public int getCounter(){
         return counter;
