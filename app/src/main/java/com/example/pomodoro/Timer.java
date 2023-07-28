@@ -1,15 +1,13 @@
 package com.example.pomodoro;
 
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 public class Timer extends MainActivity {
 
-    int counter;
+    int counter = 0;
     boolean paused = false;
 
     int milliLeft;
@@ -35,13 +33,12 @@ public class Timer extends MainActivity {
 
     //start timer function
     void startTimer(long duration, long interval){
-        cTimer = new CountDownTimer(duration, interval) {
+        cTimer = new CountDownTimer(duration * 1000, interval) {//60000
             @Override
             public void onTick(long millisUntilFinished) {
                 milliLeft =(int)millisUntilFinished;
                 min = ((int)millisUntilFinished/(1000*60));
                 sec = (((int)millisUntilFinished/1000)-min*60);
-                //int clock.setText(Long.toString(min)+":"+Long.toString(sec));
                 timerTextField.setText(Long.toString(min)+":"+Long.toString(sec));
             }
 
@@ -51,6 +48,7 @@ public class Timer extends MainActivity {
                 cancelTimer();
                 startTimerButton.setVisibility(View.VISIBLE);
                 pauseTimerButton.setVisibility(View.INVISIBLE);
+                counter = counter + 1;
             }
         };
         cTimer.start();
@@ -70,5 +68,13 @@ public class Timer extends MainActivity {
     public void timerResume(){
         paused = false;
         startTimer(milliLeft,1);
+    }
+
+    public int getCounter(){
+        return counter;
+    }
+
+    public void setCounter(int counter){
+        this.counter = counter;
     }
 }

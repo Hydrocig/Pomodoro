@@ -27,14 +27,19 @@ public class MainActivity extends AppCompatActivity {
         SimpleCalc simpleCalc = new SimpleCalc();
         Timer timer = new Timer(timerTextField, startTimerButton, pauseTimerButton);
 
+        int smallBrakeMin = 5;
+        int bigBrakeMin = 20;
+        int workTimeMin = 25;
+
+        int[] order = {workTimeMin, smallBrakeMin,workTimeMin, smallBrakeMin,workTimeMin, smallBrakeMin,workTimeMin, bigBrakeMin};
+
         //Create Timer on Button click
         startTimerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startTimerButton.setVisibility(View.INVISIBLE);
                 pauseTimerButton.setVisibility(View.VISIBLE);
-
-                timer.startTimer(10000,1);
+                timer.startTimer(order[timer.getCounter()],1);
             }
         });
 

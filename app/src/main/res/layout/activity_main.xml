@@ -19,7 +19,7 @@
         android:textColor="@color/black"
         android:textColorHighlight="@color/black"
         android:textIsSelectable="false"
-        android:textSize="100sp"
+        android:textSize="50sp"
         android:visibility="visible"
         android:inputType="none"
         app:layout_constraintBottom_toBottomOf="parent"
