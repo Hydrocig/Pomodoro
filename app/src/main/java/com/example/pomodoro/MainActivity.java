@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startTimerButton.setVisibility(View.INVISIBLE);
                 pauseTimerButton.setVisibility(View.VISIBLE);
-                timer.startTimer(order[timer.getCounter()],1);
+                timer.startTimer(order[timer.getCounter()%order.length],1);
             }
         });
 
