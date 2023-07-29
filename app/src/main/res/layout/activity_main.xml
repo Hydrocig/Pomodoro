@@ -57,6 +57,21 @@
         app:layout_constraintTop_toBottomOf="@+id/mainTimer"
         app:layout_constraintVertical_bias="0.12" />
 
+    <ImageButton
+        android:id="@+id/skipButton"
+        android:layout_width="63dp"
+        android:layout_height="63dp"
+        android:background="@color/black"
+        android:src="@color/black"
+        android:textColor="@color/white"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toEndOf="@+id/startButton"
+        app:layout_constraintTop_toBottomOf="@+id/mainTimer"
+        app:layout_constraintVertical_bias="0.12" />
+
     <Button
         android:id="@+id/resumeButton"
         android:layout_width="141dp"

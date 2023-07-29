@@ -8,6 +8,7 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,13 +23,13 @@ public class MainActivity extends AppCompatActivity {
         Button stopTimerButton = findViewById(R.id.stopButton);
         Button pauseTimerButton = findViewById(R.id.pauseButton);
         Button resumeTimerButton = findViewById(R.id.resumeButton);
-        long test = 1;
+        ImageButton skipTimerButton = findViewById(R.id.skipButton);
 
         //Object initialization
         SimpleCalc simpleCalc = new SimpleCalc();
         Timer timer = new Timer(timerTextField, startTimerButton, pauseTimerButton);
 
-        timerTextField.setText(simpleCalc.intToString(timer.getWorkTimeMin()));
+        timerTextField.setText(simpleCalc.intToString(timer.getWorkTimeMin())+":00");
 
         //Create Timer on Button click
         startTimerButton.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +67,21 @@ public class MainActivity extends AppCompatActivity {
                 pauseTimerButton.setVisibility(View.INVISIBLE);
                 resumeTimerButton.setVisibility(View.INVISIBLE);
                 startTimerButton.setVisibility(View.VISIBLE);
+            }
+        });
+
+        skipTimerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                timer.pauseTimer();
+
+                startTimerButton.setVisibility(View.VISIBLE);
+                pauseTimerButton.setVisibility(View.INVISIBLE);
+                resumeTimerButton.setVisibility(View.INVISIBLE);
+
+                timer.setCounter(timer.getCounter()+1);
+
+                timerTextField.setText(timer.orderArray[timer.getCounter()]+":00");
             }
         });
     }
