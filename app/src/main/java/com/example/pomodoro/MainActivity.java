@@ -3,6 +3,7 @@ package com.example.pomodoro;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         Button pauseTimerButton = findViewById(R.id.pauseButton);
         Button resumeTimerButton = findViewById(R.id.resumeButton);
         ImageButton skipTimerButton = findViewById(R.id.skipButton);
+        ImageButton settingsButton = findViewById(R.id.settingsButton);
 
         //Object initialization
         SimpleCalc simpleCalc = new SimpleCalc();
@@ -84,5 +86,17 @@ public class MainActivity extends AppCompatActivity {
                 timerTextField.setText(timer.orderArray[timer.getCounter()]+":00");
             }
         });
+
+        settingsButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                switchActivities();
+            }
+        });
+    }
+
+    private void switchActivities(){
+        Intent switchActivityIntend = new Intent(this, Settings.class);
+        startActivity(switchActivityIntend);
     }
 }
