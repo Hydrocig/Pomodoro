@@ -85,4 +85,8 @@ public class Timer extends MainActivity {
     public void setCounter(int counter){
         this.counter = counter;
     }
+
+    public int getWorkTimeMin(){
+        return workTimeMin;
+    }
 }

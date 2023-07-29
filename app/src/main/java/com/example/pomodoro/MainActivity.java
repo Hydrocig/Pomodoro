@@ -22,16 +22,13 @@ public class MainActivity extends AppCompatActivity {
         Button stopTimerButton = findViewById(R.id.stopButton);
         Button pauseTimerButton = findViewById(R.id.pauseButton);
         Button resumeTimerButton = findViewById(R.id.resumeButton);
+        long test = 1;
 
         //Object initialization
         SimpleCalc simpleCalc = new SimpleCalc();
         Timer timer = new Timer(timerTextField, startTimerButton, pauseTimerButton);
 
-        int smallBrakeMin = 5;
-        int bigBrakeMin = 20;
-        int workTimeMin = 25;
-
-        int[] order = {workTimeMin, smallBrakeMin,workTimeMin, smallBrakeMin,workTimeMin, smallBrakeMin,workTimeMin, bigBrakeMin};
+        timerTextField.setText(simpleCalc.intToString(timer.getWorkTimeMin()));
 
         //Create Timer on Button click
         startTimerButton.setOnClickListener(new View.OnClickListener() {
@@ -39,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startTimerButton.setVisibility(View.INVISIBLE);
                 pauseTimerButton.setVisibility(View.VISIBLE);
-                timer.startTimer(order[timer.getCounter()%order.length],1);
+                timer.startTimer(timer.orderArray[timer.getCounter()%timer.orderArray.length],1);
             }
         });
 
@@ -65,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 timer.stopTimer();
-                timerTextField.setText(order[0]+":00");
+                timerTextField.setText(timer.orderArray[0]+":00");
                 pauseTimerButton.setVisibility(View.INVISIBLE);
                 resumeTimerButton.setVisibility(View.INVISIBLE);
                 startTimerButton.setVisibility(View.VISIBLE);
