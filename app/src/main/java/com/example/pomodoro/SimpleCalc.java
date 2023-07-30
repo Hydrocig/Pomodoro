@@ -17,6 +17,11 @@ public class SimpleCalc {
         return result;
     }
 
+    public int StringToInt(String input){
+        int result = Integer.valueOf(input);
+        return result;
+    }
+
     public long longToInt(long input){
         int result = (int)input;
         return result;

@@ -14,7 +14,6 @@
         android:layout_height="100dp"
         android:background="@color/lightBlue"
         android:fontFamily="monospace"
-        android:text=""
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textColorHighlight="@color/black"

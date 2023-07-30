@@ -1,32 +1,35 @@
 package com.example.pomodoro;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class Timer extends MainActivity {
+import androidx.appcompat.app.AppCompatActivity;
 
+public class Timer {
     int counter = 0;
-    boolean paused = false;
-
     int milliLeft;
+    float milliLeftLong;
     int min;
     int sec;
 
-
     //Object initialization
-    int smallBrakeMin = 5;
-    int bigBrakeMin = 20;
-    int workTimeMin = 25;
+    int smallBrakeMin;
+    int bigBrakeMin;
+    int workTimeMin;
 
-    int[] orderArray = {workTimeMin, smallBrakeMin,workTimeMin, smallBrakeMin,workTimeMin, smallBrakeMin,workTimeMin, bigBrakeMin};
 
     SimpleCalc simpleCalc = new SimpleCalc();
 
-    private final TextView timerTextField;
-    private final Button startTimerButton;
-    private final Button pauseTimerButton;
+    private TextView timerTextField;
+    private Button startTimerButton;
+    private Button pauseTimerButton;
 
     public Timer(TextView timerTextField, Button startTimerButton, Button pauseTimerButton) {
         this.timerTextField = timerTextField;
@@ -34,20 +37,31 @@ public class Timer extends MainActivity {
         this.pauseTimerButton = pauseTimerButton;
     }
 
+    public Timer(int smallBrakeMin, int bigBrakeMin, int workTimeMin){
+        this.smallBrakeMin = smallBrakeMin;
+        this.bigBrakeMin  = bigBrakeMin;
+        this.workTimeMin = workTimeMin;
+    }
+
+    int[] orderArray = {workTimeMin, smallBrakeMin, workTimeMin, smallBrakeMin, workTimeMin, smallBrakeMin, workTimeMin, bigBrakeMin};
+
     //Declare Timer
-    CountDownTimer cTimer = null;
+    CountDownTimer cTimer;
 
     //start timer function
-    void startTimer(long duration, long interval){
-        cTimer = new CountDownTimer(duration * 1000, interval) {//60000
+    void startTimer(float duration){
+        cTimer = new CountDownTimer((long)(duration * 60000), 1) {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onTick(long millisUntilFinished) {
-                milliLeft =(int)millisUntilFinished;
+                milliLeftLong = millisUntilFinished;
+                milliLeft = (int)millisUntilFinished;
                 min = ((int)millisUntilFinished/(1000*60));
                 sec = (((int)millisUntilFinished/1000)-min*60);
                 timerTextField.setText(Long.toString(min)+":"+Long.toString(sec));
             }
 
+            @SuppressLint("SetTextI18n")
             @Override
             public void onFinish() {
                 //cancelTimer();
@@ -58,25 +72,29 @@ public class Timer extends MainActivity {
             }
         };
         cTimer.start();
-
     }
 
     //cancel timer
     public void pauseTimer(){
-        paused = true;
         cTimer.cancel();
     }
 
+    public void skipTimer(){
+        try {
+            cTimer.cancel();
+        }catch (NullPointerException e){
+            ;
+        }
+    }
+
     public void timerResume(){
-        paused = false;
-        startTimer(milliLeft,1);
+        startTimer(milliLeftLong/60000);
     }
 
     public void stopTimer(){
         cTimer.cancel();
         counter = 0;
     }
-
 
     public int getCounter(){
         return counter;
@@ -88,5 +106,38 @@ public class Timer extends MainActivity {
 
     public int getWorkTimeMin(){
         return workTimeMin;
+    }
+
+    public void setWorkTimeMin(int input){
+        this.workTimeMin = input;
+    }
+
+    public int getSmallBrakeMin(){
+        return smallBrakeMin;
+    }
+
+    public void setSmallBrakeMin(int input){
+        this.smallBrakeMin = input;
+    }
+
+    public int getBigBrakeMin(){
+        return bigBrakeMin;
+    }
+
+    public void setBigBrakeMin(int input){
+        this.bigBrakeMin = input;
+    }
+
+    public void updateOrderArray(){
+        orderArray[1] = smallBrakeMin;
+        orderArray[3] = smallBrakeMin;
+        orderArray[5] = smallBrakeMin;
+
+        orderArray[0] = workTimeMin;
+        orderArray[2] = workTimeMin;
+        orderArray[4] = workTimeMin;
+        orderArray[6] = workTimeMin;
+
+        orderArray[7] = bigBrakeMin;
     }
 }
