@@ -2,9 +2,12 @@ package com.example.pomodoro;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
@@ -14,18 +17,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Timer {
     int counter = 0;
+
     int milliLeft;
     float milliLeftLong;
     int min;
     int sec;
 
-    //Object initialization
     int smallBrakeMin;
     int bigBrakeMin;
     int workTimeMin;
 
+    public static final String ACTION_UPDATE_NOTIFICATION = "com.example.pomodoro.UPDATE_NOTIFICATION";
 
-    SimpleCalc simpleCalc = new SimpleCalc();
+    BackgroundService backgroundService;
 
     private TextView timerTextField;
     private Button startTimerButton;
@@ -43,6 +47,10 @@ public class Timer {
         this.workTimeMin = workTimeMin;
     }
 
+    public Timer(){
+
+    }
+
     int[] orderArray = {workTimeMin, smallBrakeMin, workTimeMin, smallBrakeMin, workTimeMin, smallBrakeMin, workTimeMin, bigBrakeMin};
 
     //Declare Timer
@@ -50,6 +58,7 @@ public class Timer {
 
     //start timer function
     void startTimer(float duration){
+        backgroundService = new BackgroundService();
         cTimer = new CountDownTimer((long)(duration * 60000), 1) {
             @SuppressLint("SetTextI18n")
             @Override
@@ -59,6 +68,13 @@ public class Timer {
                 min = ((int)millisUntilFinished/(1000*60));
                 sec = (((int)millisUntilFinished/1000)-min*60);
                 timerTextField.setText(Long.toString(min)+":"+Long.toString(sec));
+                //backgroundService.setTitle(Long.toString(millisUntilFinished));
+
+                // Send an intent to the BackgroundService with the updated notification text
+                Intent intent = new Intent(timerTextField.getContext(), BackgroundService.class);
+                intent.setAction(Timer.ACTION_UPDATE_NOTIFICATION);
+                intent.putExtra("notificationText", Long.toString(millisUntilFinished));
+                timerTextField.getContext().startService(intent);
             }
 
             @SuppressLint("SetTextI18n")
@@ -96,6 +112,24 @@ public class Timer {
         counter = 0;
     }
 
+    public float getMilliLeft(){
+        return milliLeftLong;
+    }
+
+    public float getMilliLeftLong(){
+        return milliLeftLong/60000;
+    }
+
+    public void setMilliLeftLong(float milliLeftLong){
+        this.milliLeftLong = milliLeftLong;
+    }
+
+    public CharSequence getMilliLeftLongFormat(){
+        int min = (int) (milliLeftLong / 60000);
+        int sec = (int) ((milliLeftLong / 1000) % 60);
+        return String.format("%02d:%02d", min, sec);
+    }
+
     public int getCounter(){
         return counter;
     }
@@ -104,24 +138,12 @@ public class Timer {
         this.counter = counter;
     }
 
-    public int getWorkTimeMin(){
-        return workTimeMin;
-    }
-
     public void setWorkTimeMin(int input){
         this.workTimeMin = input;
     }
 
-    public int getSmallBrakeMin(){
-        return smallBrakeMin;
-    }
-
     public void setSmallBrakeMin(int input){
         this.smallBrakeMin = input;
-    }
-
-    public int getBigBrakeMin(){
-        return bigBrakeMin;
     }
 
     public void setBigBrakeMin(int input){

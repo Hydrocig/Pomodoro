@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +19,9 @@ public class Settings extends AppCompatActivity {
     EditText smallPauseEdit;
     EditText bigPauseEdit;
     EditText workTimeEdit;
+    Switch backgroundSwitch;
+
+    BackgroundService backgroundService;
 
     SharedPreferences sharedPreferences;
 
@@ -36,6 +40,7 @@ public class Settings extends AppCompatActivity {
         smallPauseEdit = findViewById(R.id.smallPauseEdit);
         bigPauseEdit = findViewById(R.id.bigPauseEdit);
         workTimeEdit = findViewById(R.id.workTimeEdit);
+        backgroundSwitch = findViewById(R.id.backgroundSwitch);
 
         MainActivity main = new MainActivity();
 
@@ -50,7 +55,15 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 writeToSharedPreferences(getSmallPauseEditText(), getBigPauseEditText(), getWorkTimeEditText());
+            }
+        });
 
+        backgroundSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!backgroundSwitch.isChecked()){
+                    backgroundService.onDestroy();
+                }
             }
         });
     }

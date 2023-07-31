@@ -4,10 +4,18 @@ package com.example.pomodoro;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioAttributes;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
@@ -15,9 +23,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    public boolean reloadNeeded;
     Timer timer;
     SharedPreferences sharedPreferences;
+    NotificationManager notificationManager;
+    AudioAttributes audioAttributes;
+    TextView timerTextField;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -26,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Get Content from layout
-        TextView timerTextField = findViewById(R.id.mainTimer);
+        timerTextField = findViewById(R.id.mainTimer);
         Button startTimerButton = findViewById(R.id.startButton);
         Button stopTimerButton = findViewById(R.id.stopButton);
         Button pauseTimerButton = findViewById(R.id.pauseButton);
@@ -40,6 +50,19 @@ public class MainActivity extends AppCompatActivity {
         timer.updateOrderArray();
         sharedPreferences = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
         timerTextField.setText(simpleCalc.intToString(sharedPreferences.getInt("workTime", 25))+":00");
+
+        //calling Notification Channel
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        createNotificationChannel();
+
+        //Starting BackgroundService
+        Intent serviceIntent = new Intent(this, BackgroundService.class);
+        serviceIntent.putExtra("MilliLeftLong", timer.getMilliLeftLong());
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            startForegroundService(serviceIntent);
+        }else {
+            startService(serviceIntent);
+        }
 
         //Create Timer on Button click
         startTimerButton.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
         int smallBreakSetting = sharedPreferences.getInt("smallBreak", 5);
         int bigBreakSetting = sharedPreferences.getInt("bigBreak", 20);
         int workTimeSetting = sharedPreferences.getInt("workTime", 25);
-        //timer = new Timer(smallBreakSetting, bigBreakSetting, workTimeSetting);
         timer.setSmallBrakeMin(smallBreakSetting);
         timer.setBigBrakeMin(bigBreakSetting);
         timer.setWorkTimeMin(workTimeSetting);
@@ -123,11 +145,22 @@ public class MainActivity extends AppCompatActivity {
         startActivity(switchActivityIntend);
     }
 
-    public void setReloadNeeded(boolean reloadNeeded){
-        this.reloadNeeded = reloadNeeded;
-    }
+    private void createNotificationChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            String channelID = "Pomodoro";
+            String channelName = "Pomodoro Timer";
+            String channelDescription = "Pomodoro Timer";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
 
-    public boolean getReloadNeeded(){
-        return reloadNeeded;
+            audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .build();
+
+            NotificationChannel channel = new NotificationChannel(channelID, channelName, importance);
+            channel.setDescription(channelDescription);
+            channel.setSound(null, audioAttributes);
+
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }
