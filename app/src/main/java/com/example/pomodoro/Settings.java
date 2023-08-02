@@ -40,7 +40,6 @@ public class Settings extends AppCompatActivity {
         smallPauseEdit = findViewById(R.id.smallPauseEdit);
         bigPauseEdit = findViewById(R.id.bigPauseEdit);
         workTimeEdit = findViewById(R.id.workTimeEdit);
-        backgroundSwitch = findViewById(R.id.backgroundSwitch);
 
         MainActivity main = new MainActivity();
 

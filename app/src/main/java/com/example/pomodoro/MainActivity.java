@@ -1,8 +1,12 @@
 package com.example.pomodoro;
 
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -10,7 +14,9 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.media.AudioAttributes;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,12 +28,15 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.security.Permission;
+
 public class MainActivity extends AppCompatActivity {
     Timer timer;
     SharedPreferences sharedPreferences;
     NotificationManager notificationManager;
     AudioAttributes audioAttributes;
     TextView timerTextField;
+    private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 1001;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -50,6 +59,12 @@ public class MainActivity extends AppCompatActivity {
         timer.updateOrderArray();
         sharedPreferences = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
         timerTextField.setText(simpleCalc.intToString(sharedPreferences.getInt("workTime", 25))+":00");
+
+        //Request Notification Permission
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED){
+            System.out.println("Inside");
+            requestPermissions(new String[] {Manifest.permission.POST_NOTIFICATIONS}, NOTIFICATION_PERMISSION_REQUEST_CODE);
+        }
 
         //calling Notification Channel
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -152,13 +167,16 @@ public class MainActivity extends AppCompatActivity {
             String channelDescription = "Pomodoro Timer";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
 
-            audioAttributes = new AudioAttributes.Builder()
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                     .build();
+
 
             NotificationChannel channel = new NotificationChannel(channelID, channelName, importance);
             channel.setDescription(channelDescription);
             channel.setSound(null, audioAttributes);
+            channel.enableVibration(false);
 
             notificationManager.createNotificationChannel(channel);
         }

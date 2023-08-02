@@ -108,8 +108,12 @@ public class Timer {
     }
 
     public void stopTimer(){
-        cTimer.cancel();
-        counter = 0;
+        try {
+            cTimer.cancel();
+            counter = 0;
+        }catch (NullPointerException e){
+            ;
+        }
     }
 
     public float getMilliLeft(){

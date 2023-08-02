@@ -52,8 +52,6 @@ public class BackgroundService extends Service {
 
     private Notification createNotification() {
         String channelId = "Pomodoro";
-        timer = new Timer();
-
 
         String contentText;
         if (notificationText.isEmpty()) {
