@@ -26,6 +26,7 @@ import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.security.Permission;
@@ -52,10 +53,11 @@ public class MainActivity extends AppCompatActivity {
         Button resumeTimerButton = findViewById(R.id.resumeButton);
         ImageButton skipTimerButton = findViewById(R.id.skipButton);
         ImageButton settingsButton = findViewById(R.id.settingsButton);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
 
         //Object initialization
         SimpleCalc simpleCalc = new SimpleCalc();
-        timer = new Timer(timerTextField, startTimerButton, pauseTimerButton);
+        timer = new Timer(timerTextField, startTimerButton, pauseTimerButton, progressBar);
         timer.updateOrderArray();
         sharedPreferences = getSharedPreferences("Preferences", Context.MODE_PRIVATE);
         timerTextField.setText(simpleCalc.intToString(sharedPreferences.getInt("workTime", 25))+":00");

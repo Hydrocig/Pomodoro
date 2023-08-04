@@ -11,12 +11,14 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Timer {
     int counter = 0;
+    boolean canceled;
 
     int milliLeft;
     float milliLeftLong;
@@ -34,11 +36,13 @@ public class Timer {
     private TextView timerTextField;
     private Button startTimerButton;
     private Button pauseTimerButton;
+    private ProgressBar progressBar;
 
-    public Timer(TextView timerTextField, Button startTimerButton, Button pauseTimerButton) {
+    public Timer(TextView timerTextField, Button startTimerButton, Button pauseTimerButton, ProgressBar progressBar) {
         this.timerTextField = timerTextField;
         this.startTimerButton = startTimerButton;
         this.pauseTimerButton = pauseTimerButton;
+        this.progressBar = progressBar;
     }
 
     public Timer(int smallBrakeMin, int bigBrakeMin, int workTimeMin){
@@ -63,6 +67,7 @@ public class Timer {
             @SuppressLint("SetTextI18n")
             @Override
             public void onTick(long millisUntilFinished) {
+                canceled = false;
                 milliLeftLong = millisUntilFinished;
                 milliLeft = (int)millisUntilFinished;
                 min = ((int)millisUntilFinished/(1000*60));
@@ -70,21 +75,28 @@ public class Timer {
                 timerTextField.setText(Long.toString(min)+":"+Long.toString(sec));
                 //backgroundService.setTitle(Long.toString(millisUntilFinished));
 
-                // Send an intent to the BackgroundService with the updated notification text
+                //Send an intent to the BackgroundService with the updated notification text
                 Intent intent = new Intent(timerTextField.getContext(), BackgroundService.class);
                 intent.setAction(Timer.ACTION_UPDATE_NOTIFICATION);
                 intent.putExtra("notificationText", Long.toString(millisUntilFinished));
                 timerTextField.getContext().startService(intent);
+
+                //Updating Progress Bar
+                if(progressBar.getVisibility() == View.INVISIBLE){
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+                progressBar.setProgress(10*(10000-((int)(10000*millisUntilFinished)/((int)duration*60000))));
             }
 
             @SuppressLint("SetTextI18n")
             @Override
             public void onFinish() {
-                //cancelTimer();
+                canceled = true;
                 startTimerButton.setVisibility(View.VISIBLE);
                 pauseTimerButton.setVisibility(View.INVISIBLE);
                 counter = counter + 1;
                 timerTextField.setText(orderArray[counter]+":00");
+                progressBar.setVisibility(View.INVISIBLE);
             }
         };
         cTimer.start();
@@ -98,6 +110,7 @@ public class Timer {
     public void skipTimer(){
         try {
             cTimer.cancel();
+            canceled = true;
         }catch (NullPointerException e){
             ;
         }
@@ -110,10 +123,17 @@ public class Timer {
     public void stopTimer(){
         try {
             cTimer.cancel();
+            canceled = true;
             counter = 0;
+            progressBar.setProgress(0);
+            progressBar.setVisibility(View.INVISIBLE);
         }catch (NullPointerException e){
             ;
         }
+    }
+
+    public boolean getCanceled(){
+        return canceled;
     }
 
     public float getMilliLeft(){

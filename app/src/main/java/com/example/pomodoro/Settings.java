@@ -19,7 +19,6 @@ public class Settings extends AppCompatActivity {
     EditText smallPauseEdit;
     EditText bigPauseEdit;
     EditText workTimeEdit;
-    Switch backgroundSwitch;
 
     BackgroundService backgroundService;
 
@@ -57,14 +56,6 @@ public class Settings extends AppCompatActivity {
             }
         });
 
-        backgroundSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!backgroundSwitch.isChecked()){
-                    backgroundService.onDestroy();
-                }
-            }
-        });
     }
 
     public int getSmallPauseEditText() {

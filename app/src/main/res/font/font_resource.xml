@@ -45,4 +45,14 @@
         android:fontWeight="400"
         android:font="@font/ptmono_regular"/>
 
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/victormono_semibold"/>
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/victormono_bold"/>
+
 </font-family>

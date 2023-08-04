@@ -13,14 +13,14 @@
         android:id="@+id/mainTimer"
         android:layout_width="182dp"
         android:layout_height="100dp"
-        android:background="@color/darkPrimary"
-        android:fontFamily="@font/firamono_medium"
+        android:background="@drawable/rounded_button_timer"
+        android:fontFamily="@font/victormono_bold"
         android:textAlignment="center"
         android:gravity="center"
         android:textColor="@color/black"
         android:textColorHighlight="@color/black"
         android:textIsSelectable="false"
-        android:textSize="50sp"
+        android:textSize="56sp"
         android:visibility="visible"
         android:inputType="none"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -36,89 +36,91 @@
         android:layout_width="141dp"
         android:layout_height="63dp"
         android:background="@drawable/button_background"
-        android:textAllCaps="true"
-        android:text="S t a r t"
         android:fontFamily="@font/bebasneue_regular"
-        android:textSize="25sp"
+        android:text="S t a r t"
+        android:textAllCaps="true"
         android:textColor="@color/darkText"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainTimer"
-        app:layout_constraintVertical_bias="0.12" />
+        app:layout_constraintVertical_bias="0.291" />
 
     <Button
         android:id="@+id/pauseButton"
         android:layout_width="141dp"
         android:layout_height="63dp"
         android:background="@drawable/button_background"
-        android:textAllCaps="true"
-        android:text="P a u s e"
-        android:textSize="25sp"
         android:fontFamily="@font/bebasneue_regular"
+        android:text="P a u s e"
+        android:textAllCaps="true"
         android:textColor="@color/white"
+        android:textSize="30sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainTimer"
-        app:layout_constraintVertical_bias="0.12" />
+        app:layout_constraintVertical_bias="0.291" />
 
     <ImageButton
         android:id="@+id/skipButton"
         android:layout_width="63dp"
         android:layout_height="63dp"
-        android:background="@drawable/button_background"
-        android:src="@drawable/skip"
+        android:background="@drawable/roundedbutton"
+        android:src="@drawable/skip3"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.791"
+        app:layout_constraintHorizontal_bias="0.277"
         app:layout_constraintStart_toEndOf="@+id/startButton"
-        app:layout_constraintTop_toBottomOf="@+id/settingsButton"
-        app:layout_constraintVertical_bias="0.33" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.523" />
 
     <Button
         android:id="@+id/resumeButton"
         android:layout_width="141dp"
         android:layout_height="63dp"
-        android:text="R e s u m e"
-        android:textSize="25sp"
-        android:textAllCaps="true"
         android:background="@drawable/button_background"
-        android:textColor="@color/darkText"
         android:fontFamily="@font/bebasneue_regular"
+        android:text="R e s u m e"
+        android:textAllCaps="true"
+        android:textColor="@color/darkText"
+        android:textSize="30sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/stopButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainTimer"
-        app:layout_constraintVertical_bias="0.574" />
+        app:layout_constraintVertical_bias="0.779" />
 
     <Button
         android:id="@+id/stopButton"
         android:layout_width="141dp"
         android:layout_height="63dp"
         android:layout_marginTop="16dp"
+
         android:background="@drawable/button_background"
-        android:textColor="@color/darkText"
         android:fontFamily="@font/bebasneue_regular"
-        android:textAllCaps="true"
-        android:textSize="25sp"
         android:text="S t o p"
+
+        android:textAllCaps="true"
+        android:textColor="@color/darkText"
+        android:textSize="30sp"
         android:visibility="visible"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/startButton"
-        app:layout_constraintVertical_bias="0.075" />
+        app:layout_constraintVertical_bias="0.087" />
 
     <ImageButton
         android:id="@+id/settingsButton"
         android:layout_width="63dp"
         android:layout_height="63dp"
-        android:background="@drawable/button_background"
+        android:background="@drawable/roundedbutton"
         android:src="@drawable/settings"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -127,6 +129,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="302dp"
+
+        android:layout_height="267dp"
+        android:background="@drawable/progress_bar_background"
+        android:indeterminate="false"
+        android:max="100000"
+
+        android:progress="0"
+        android:progressDrawable="@drawable/progress_bar"
+        android:visibility="invisible"
+
+        app:layout_constraintBottom_toTopOf="@+id/startButton"
+        app:layout_constraintEnd_toEndOf="@+id/mainTimer"
+        app:layout_constraintStart_toStartOf="@+id/mainTimer"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.409" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

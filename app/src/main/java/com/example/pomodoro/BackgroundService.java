@@ -54,7 +54,7 @@ public class BackgroundService extends Service {
         String channelId = "Pomodoro";
 
         String contentText;
-        if (notificationText.isEmpty()) {
+        if (notificationText.isEmpty() || timer.getCanceled()) {
             contentText = "Currently no timer running";
         } else {
             contentText = notificationText;
