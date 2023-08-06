@@ -16,9 +16,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Locale;
+
 public class Timer {
     int counter = 0;
-    boolean canceled;
+    boolean canceled = true;
 
     int milliLeft;
     float milliLeftLong;
@@ -68,12 +70,13 @@ public class Timer {
             @Override
             public void onTick(long millisUntilFinished) {
                 canceled = false;
+                //backgroundService.setCanceledBackground(false);
                 milliLeftLong = millisUntilFinished;
                 milliLeft = (int)millisUntilFinished;
                 min = ((int)millisUntilFinished/(1000*60));
-                sec = (((int)millisUntilFinished/1000)-min*60);
-                timerTextField.setText(Long.toString(min)+":"+Long.toString(sec));
-                //backgroundService.setTitle(Long.toString(millisUntilFinished));
+                sec = (((int)millisUntilFinished/1000)-min*60)%60;
+                String secondsString = String.format(Locale.US, "%02d", sec);
+                timerTextField.setText(Long.toString(min)+":"+secondsString);
 
                 //Send an intent to the BackgroundService with the updated notification text
                 Intent intent = new Intent(timerTextField.getContext(), BackgroundService.class);
@@ -85,7 +88,8 @@ public class Timer {
                 if(progressBar.getVisibility() == View.INVISIBLE){
                     progressBar.setVisibility(View.VISIBLE);
                 }
-                progressBar.setProgress(10*(10000-((int)(10000*millisUntilFinished)/((int)duration*60000))));
+
+                progressBar.setProgress((int) (1000 * (duration * 60000 - millisUntilFinished) / (duration * 60000)));
             }
 
             @SuppressLint("SetTextI18n")
@@ -104,7 +108,9 @@ public class Timer {
 
     //cancel timer
     public void pauseTimer(){
-        cTimer.cancel();
+        if(cTimer != null){
+            cTimer.cancel();
+        }
     }
 
     public void skipTimer(){
@@ -112,12 +118,16 @@ public class Timer {
             cTimer.cancel();
             canceled = true;
         }catch (NullPointerException e){
-            ;
+            canceled = true;
         }
     }
 
     public void timerResume(){
-        startTimer(milliLeftLong/60000);
+        try {
+            startTimer(milliLeftLong/60000);
+        }catch (ArithmeticException ignored){
+            ;
+        }
     }
 
     public void stopTimer(){
@@ -128,7 +138,7 @@ public class Timer {
             progressBar.setProgress(0);
             progressBar.setVisibility(View.INVISIBLE);
         }catch (NullPointerException e){
-            ;
+            canceled = true;
         }
     }
 
@@ -142,16 +152,6 @@ public class Timer {
 
     public float getMilliLeftLong(){
         return milliLeftLong/60000;
-    }
-
-    public void setMilliLeftLong(float milliLeftLong){
-        this.milliLeftLong = milliLeftLong;
-    }
-
-    public CharSequence getMilliLeftLongFormat(){
-        int min = (int) (milliLeftLong / 60000);
-        int sec = (int) ((milliLeftLong / 1000) % 60);
-        return String.format("%02d:%02d", min, sec);
     }
 
     public int getCounter(){

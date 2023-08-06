@@ -23,6 +23,9 @@
 
         <service android:name=".BackgroundService"/>
 
+        <receiver android:name=".NotificationReceiver"/>
+        <receiver android:name=".NotificationReceiverStop"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

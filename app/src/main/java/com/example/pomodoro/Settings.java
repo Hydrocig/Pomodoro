@@ -3,6 +3,7 @@ package com.example.pomodoro;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
@@ -21,6 +22,7 @@ public class Settings extends AppCompatActivity {
     EditText workTimeEdit;
 
     BackgroundService backgroundService;
+    MediaPlayer mediaPlayer;
 
     SharedPreferences sharedPreferences;
 
@@ -40,11 +42,15 @@ public class Settings extends AppCompatActivity {
         bigPauseEdit = findViewById(R.id.bigPauseEdit);
         workTimeEdit = findViewById(R.id.workTimeEdit);
 
+        mediaPlayer = new MediaPlayer();
         MainActivity main = new MainActivity();
 
         backToMainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (mediaPlayer != null) {
+                    mediaPlayer.start();
+                }
                 finish();
             }
         });
@@ -53,6 +59,10 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 writeToSharedPreferences(getSmallPauseEditText(), getBigPauseEditText(), getWorkTimeEditText());
+
+                if (mediaPlayer != null) {
+                    mediaPlayer.start();
+                }
             }
         });
 
