@@ -64,7 +64,6 @@ public class BackgroundService extends Service {
 
         String contentText;
         if (notificationText.isEmpty() || timer.getCanceled()) {
-            System.out.println(timer.getCanceled());
             contentText = "Currently no timer running";
         } else {
             contentText = notificationText;

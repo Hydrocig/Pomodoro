@@ -20,7 +20,7 @@ import java.util.Locale;
 
 public class Timer {
     int counter = 0;
-    boolean canceled = true;
+    boolean canceled;
 
     int milliLeft;
     float milliLeftLong;
@@ -70,6 +70,7 @@ public class Timer {
             @Override
             public void onTick(long millisUntilFinished) {
                 canceled = false;
+                setCanceled(false);
                 //backgroundService.setCanceledBackground(false);
                 milliLeftLong = millisUntilFinished;
                 milliLeft = (int)millisUntilFinished;
@@ -142,7 +143,12 @@ public class Timer {
         }
     }
 
+    public void setCanceled(boolean input){
+        this.canceled = input;
+    }
+
     public boolean getCanceled(){
+        System.out.println(canceled);
         return canceled;
     }
 

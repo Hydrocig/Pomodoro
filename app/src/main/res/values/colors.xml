@@ -3,7 +3,8 @@
     <color name="black">#000814</color>
     <color name="white">#FFFFFFFF</color>
     <color name="lightBlue">#187187</color>
-    
+    <color name="logoWhite">#f2ecde</color>
+
     <color name="darkText">#fdfdfc</color>
     <color name="darkBackground">#A0BBAE</color>
     <color name="darkBackgroundLight">#d4e0db</color>
